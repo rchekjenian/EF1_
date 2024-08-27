@@ -7,6 +7,8 @@ namespace BNA.EF1.API.Controllers
 {
     public class ExampleController : ApiBaseController
     {
+
+
         /// <summary>
         /// Get an example class
         /// </summary>
@@ -16,6 +18,7 @@ namespace BNA.EF1.API.Controllers
         [ProducesResponseType(typeof(GetExampleDto), StatusCodes.Status200OK)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
+
         public async Task<ActionResult<GetExampleDto>> GetExample(Guid id)
         {
             var result = await Mediator.Send(new GetExampleQuery(id));

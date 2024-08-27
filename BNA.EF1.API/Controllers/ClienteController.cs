@@ -14,13 +14,17 @@ using BNA.EF1.Application.Clientes.Commands.CreateCliente;
 using BNA.EF1.Application.Cuentas.Commands.CreateCuenta;
 using ErrorOr;
 
+using Microsoft.Extensions.Logging;
+using BNA.EF1.Application.Example.Commands.CreateExample;
+
 namespace BNA.EF1.API.Controllers
 {
     public class ClienteController : ApiBaseController
 
-
     {
 
+        private readonly ILogger<ClienteController> _logger;
+       
         //GET /api/clientes: Obtener la lista de todos los clientes.
 
         [HttpGet("ListadoCientes")]
@@ -29,10 +33,16 @@ namespace BNA.EF1.API.Controllers
         [ProducesResponseType(500)]
         public async Task<ActionResult<List<Application.Clientes.Queries.GetCliente.GetClienteDto>>> GetClientesQuery()
         {
+            _logger.LogInformation("/api/clientes");
+
             //var clientes = await Mediator.Send(new GetClientesQuery());
             var clientes = new GetClienteDto(new Guid(), "LoFaro", "Bruno", 20141444443);
+            _logger.LogInformation("FIN /api/clientes");
+
             return Ok(clientes);
+        
         }
+
 
         //GET /api/clientes/{id}: Obtener detalles de un cliente específico por ID.
 
@@ -44,7 +54,11 @@ namespace BNA.EF1.API.Controllers
         [ProducesResponseType(500)]
         private async Task<ActionResult<Application.Clientes.Queries.GetCliente.GetClienteDto>> GetClienteQuery(Guid id)
         {
+            _logger.LogInformation("/api/clientes/id");
+
             var clientes = new GetClienteDto(new Guid(), "LoFaro", "Bruno", 20141444443);
+            _logger.LogInformation("FIN /api/clientes/id");
+
             return Ok(clientes);
 
         }
@@ -54,10 +68,16 @@ namespace BNA.EF1.API.Controllers
         [ProducesResponseType(typeof(Application.Clientes.Queries.GetCliente.GetClienteDto), StatusCodes.Status200OK)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
+
+
         public async Task<ActionResult<List<Application.Clientes.Queries.GetCliente.GetClienteDto>>> GetClientesCuentasQuery(double cuil)
         {
- //           var result = await Mediator.Send(new GetClientesCuentasQuery(cuil));
+
+            _logger.LogInformation("CUIL/CUENTAS");
+            //           var result = await Mediator.Send(new GetClientesCuentasQuery(cuil));
             var clientes = new GetClienteDto(new Guid(), "LoFaro", "Bruno", 20141444443);
+
+            _logger.LogInformation("FIN CUIL/CUENTAS");
             return Ok(clientes);
 
 
@@ -72,9 +92,14 @@ namespace BNA.EF1.API.Controllers
         [ProducesResponseType(500)]
         public async Task<ActionResult<GetClienteDto>> CreateClienteCommand(CreateClienteCommand  request)
         {
-//        var result = await Mediator.Send(new CreateClienteCommand( request.Nombre,request.Apellido,request.cuil));
+            //        var result = await Mediator.Send(new CreateClienteCommand( request.Nombre,request.Apellido,request.cuil));
+
+            _logger.LogInformation("/api/clientes: Da de alta un cliente.");
 
             var clientes = new GetClienteDto(new Guid(), request.Apellido, request.Nombre, request.cuil);
+
+            _logger.LogInformation("FIN /api/clientes: Da de alta un cliente.");
+
             return Ok(clientes);
 
             
@@ -104,8 +129,12 @@ namespace BNA.EF1.API.Controllers
         {
             //var result = await Mediator.Send(new CreateCuentaCommand(id, request));
 
+            _logger.LogInformation("ID/CUENTAS:");
+
             //return result.Match(_ => Ok(), Problem);
             var clientes = new GetClienteDto(new Guid(), "LoFaro", "Bruno", 20141444443);
+            _logger.LogInformation(" FIN ID/CUENTAS:");
+
             return Ok(clientes);
         }
 
