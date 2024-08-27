@@ -23,8 +23,17 @@ namespace BNA.EF1.API.Controllers
 
     {
 
-        private readonly ILogger<ClienteController> _logger;
-       
+        private readonly ILogger<CreateClienteCommandHandler> _logger;
+
+
+        public ClienteController(ILogger<CreateClienteCommandHandler> logger)
+        {
+            _logger = logger;
+        }
+
+
+
+
         //GET /api/clientes: Obtener la lista de todos los clientes.
 
         [HttpGet("ListadoCientes")]
@@ -33,8 +42,7 @@ namespace BNA.EF1.API.Controllers
         [ProducesResponseType(500)]
         public async Task<ActionResult<List<Application.Clientes.Queries.GetCliente.GetClienteDto>>> GetClientesQuery()
         {
-            _logger.LogInformation("/api/clientes");
-
+            _logger.LogInformation("Se inició la consulta de /api/clientes /Listado de clientes");
             //var clientes = await Mediator.Send(new GetClientesQuery());
             var clientes = new GetClienteDto(new Guid(), "LoFaro", "Bruno", 20141444443);
             _logger.LogInformation("FIN /api/clientes");
@@ -54,10 +62,10 @@ namespace BNA.EF1.API.Controllers
         [ProducesResponseType(500)]
         private async Task<ActionResult<Application.Clientes.Queries.GetCliente.GetClienteDto>> GetClienteQuery(Guid id)
         {
-            _logger.LogInformation("/api/clientes/id");
+            _logger.LogInformation("se inicio la consulta /api/clientes/{id}");
 
             var clientes = new GetClienteDto(new Guid(), "LoFaro", "Bruno", 20141444443);
-            _logger.LogInformation("FIN /api/clientes/id");
+            _logger.LogInformation("FIN /api/clientes/{id}");
 
             return Ok(clientes);
 
@@ -73,7 +81,7 @@ namespace BNA.EF1.API.Controllers
         public async Task<ActionResult<List<Application.Clientes.Queries.GetCliente.GetClienteDto>>> GetClientesCuentasQuery(double cuil)
         {
 
-            _logger.LogInformation("CUIL/CUENTAS");
+            _logger.LogInformation("se inicio la consulta del metodo CUIL/CUENTAS");
             //           var result = await Mediator.Send(new GetClientesCuentasQuery(cuil));
             var clientes = new GetClienteDto(new Guid(), "LoFaro", "Bruno", 20141444443);
 
@@ -94,7 +102,7 @@ namespace BNA.EF1.API.Controllers
         {
             //        var result = await Mediator.Send(new CreateClienteCommand( request.Nombre,request.Apellido,request.cuil));
 
-            _logger.LogInformation("/api/clientes: Da de alta un cliente.");
+            _logger.LogInformation(" se inicio la consulta del metodo /api/clientes: Da de alta un cliente.");
 
             var clientes = new GetClienteDto(new Guid(), request.Apellido, request.Nombre, request.cuil);
 
@@ -129,7 +137,7 @@ namespace BNA.EF1.API.Controllers
         {
             //var result = await Mediator.Send(new CreateCuentaCommand(id, request));
 
-            _logger.LogInformation("ID/CUENTAS:");
+            _logger.LogInformation("se inicia el metodo ID/CUENTAS:");
 
             //return result.Match(_ => Ok(), Problem);
             var clientes = new GetClienteDto(new Guid(), "LoFaro", "Bruno", 20141444443);
