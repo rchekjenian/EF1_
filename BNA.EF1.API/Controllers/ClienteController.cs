@@ -16,6 +16,8 @@ using ErrorOr;
 
 using Microsoft.Extensions.Logging;
 using BNA.EF1.Application.Example.Commands.CreateExample;
+using System.Security.Cryptography;
+using Azure.Core;
 
 namespace BNA.EF1.API.Controllers
 {
@@ -44,7 +46,9 @@ namespace BNA.EF1.API.Controllers
         {
             _logger.LogInformation("Se inició la consulta de /api/clientes /Listado de clientes");
             //var clientes = await Mediator.Send(new GetClientesQuery());
-            var clientes = new GetClienteDto(new Guid(), "LoFaro", "Bruno", 20141444443);
+
+            var clientes = new List<GetClienteDto> { new GetClienteDto(Guid.NewGuid(), "LoFaro", "Bruno", 20141444443), new GetClienteDto(Guid.NewGuid(), "Chekjenian", "Rodrigo", 20345555555) , new GetClienteDto(Guid.NewGuid(), "Rodriguez", "Mauro", 20430000444) };
+          
             _logger.LogInformation("FIN /api/clientes");
 
             return Ok(clientes);
@@ -83,13 +87,17 @@ namespace BNA.EF1.API.Controllers
 
             _logger.LogInformation("se inicio la consulta del metodo CUIL/CUENTAS");
             //           var result = await Mediator.Send(new GetClientesCuentasQuery(cuil));
-            var clientes = new GetClienteDto(new Guid(), "LoFaro", "Bruno", 20141444443);
+
+            var Id_ = Guid.NewGuid();
+
+            var cuentas = new List<GetCuentaDto> { new GetCuentaDto(Guid.NewGuid(), "9210200000", "9210", 134002, 20, Id_), new GetCuentaDto(Guid.NewGuid(), "0001200000", "0001", 1300002, 20, Id_) };
+            
 
             _logger.LogInformation("FIN CUIL/CUENTAS");
-            return Ok(clientes);
+            return Ok(cuentas);
 
 
-       //     return result.Match(Ok, Problem);
+            //     return result.Match(Ok, Problem);
         }
         //POST /api/clientes: Da de alta un cliente.Se debe mandar la información necesaria por body(Nombre, Apellido, CUIL)
         /// <param name="request">ClienteDto</param>
@@ -104,7 +112,8 @@ namespace BNA.EF1.API.Controllers
 
             _logger.LogInformation(" se inicio la consulta del metodo /api/clientes: Da de alta un cliente.");
 
-            var clientes = new GetClienteDto(new Guid(), request.Apellido, request.Nombre, request.cuil);
+            var clientes = new GetClienteDto(Guid.NewGuid(), request.Apellido, request.Nombre, request.cuil);
+
 
             _logger.LogInformation("FIN /api/clientes: Da de alta un cliente.");
 
@@ -139,11 +148,16 @@ namespace BNA.EF1.API.Controllers
 
             _logger.LogInformation("se inicia el metodo ID/CUENTAS:");
 
+            
             //return result.Match(_ => Ok(), Problem);
-            var clientes = new GetClienteDto(new Guid(), "LoFaro", "Bruno", 20141444443);
-            _logger.LogInformation(" FIN ID/CUENTAS:");
+            var cuentas =  new GetCuentaDto(Guid.NewGuid(), request.NumeroCuenta, request.CodigoSucursal ,request.Saldo, request.TipoCuenta, id) ;
+            //var clientes = new GetClienteDto(new Guid(), ,LoFaro", "Bruno", 20141444443);
+            
 
-            return Ok(clientes);
+
+        _logger.LogInformation(" FIN ID/CUENTAS:");
+
+            return Ok(cuentas);
         }
 
 
